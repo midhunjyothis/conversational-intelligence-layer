@@ -1,0 +1,102 @@
+{
+  "version": "0.1",
+  "locale": "en-US",
+  "signals": [
+    {
+      "id": "ambiguity",
+      "definition": "Unclear references, vague asks, underspecified time/owner/next-steps.",
+      "indicators": ["pronouns w/o antecedent", "vague terms", "missing who/when/what"],
+      "examples": ["that thing", "soon", "can you handle it?"],
+      "maps_to": ["Clarity", "Actionability"]
+    },
+    {
+      "id": "specificity",
+      "definition": "Concrete details that reduce uncertainty (numbers, owners, dates).",
+      "indicators": ["digits", "ISO dates", "named owner", "bullet-like patterns"],
+      "examples": ["by Fri 5pm CT", "Priya owns drafting"],
+      "maps_to": ["Clarity", "Actionability"]
+    },
+    {
+      "id": "tone",
+      "definition": "Affective stance inferred from lexis/punctuation/emoji.",
+      "labels": ["neutral", "warm", "enthusiastic", "frustrated", "sarcastic", "aggressive"],
+      "indicators": ["exclamation density", "ALL CAPS", "intensifiers", "emoji sets"],
+      "maps_to": ["Respect", "Empathy"]
+    },
+    {
+      "id": "empathy",
+      "definition": "Acknowledgment of the other party’s state/effort before ask/correction.",
+      "indicators": ["thanks/ack", "sorry for...", "I understand that..."],
+      "examples": ["Thanks for the quick draft —", "I realize this is short notice —"],
+      "maps_to": ["Empathy", "Respect"]
+    },
+    {
+      "id": "hedging",
+      "definition": "Uncertainty markers that soften or obscure intent.",
+      "indicators": ["maybe", "kind of", "I think", "probably"],
+      "desired_range": "moderate (overuse → unclear; zero in sensitive contexts → harsh)",
+      "maps_to": ["Clarity", "Respect"]
+    },
+    {
+      "id": "accusation_blame",
+      "definition": "Direct or implied fault assignment to a person/group.",
+      "indicators": ["you never", "your mistake", "because of you"],
+      "maps_to": ["Respect"],
+      "risk": "conflict-escalation"
+    },
+    {
+      "id": "toxic_terms",
+      "definition": "Harassment, slurs, profanity, demeaning labels.",
+      "indicators": ["lexicon match", "model flag"],
+      "maps_to": ["Respect", "Safety"],
+      "risk": "policy-violation"
+    },
+    {
+      "id": "cultural_risk",
+      "definition": "Idioms/colloquialisms/emoji that may misfire cross-culturally.",
+      "indicators": ["culture-bound idioms", "sarcasm markers", "ambiguous gestures"],
+      "maps_to": ["Clarity", "Respect"]
+    },
+    {
+      "id": "commitment",
+      "definition": "Explicit promises, deadlines, or ownership statements.",
+      "indicators": ["I will", "own/DRI", "ETA", "by <date/time>"],
+      "maps_to": ["Actionability", "Clarity"]
+    },
+    {
+      "id": "request_structure",
+      "definition": "Clear ask with who/what/when, and optional rationale.",
+      "indicators": ["imperative + time", "please + by <time>", "because <reason>"],
+      "maps_to": ["Actionability", "Clarity"]
+    },
+    {
+      "id": "question_type",
+      "definition": "Open vs. closed vs. clarifying; detects leading or double-barreled Qs.",
+      "labels": ["open", "closed", "clarifying", "leading", "double_barreled"],
+      "maps_to": ["Clarity"]
+    },
+    {
+      "id": "expectancy_violation",
+      "definition": "Surprising register/format given relationship/channel (e.g., formal in DM, informal in RFP).",
+      "indicators": ["register mismatch", "format mismatch"],
+      "maps_to": ["Respect", "Clarity"]
+    },
+    {
+      "id": "alignment_feedback",
+      "definition": "Back-channels confirming understanding/agreement.",
+      "indicators": ["SGTM", "got it", "I’ll proceed as X"],
+      "maps_to": ["Empathy", "Clarity"]
+    },
+    {
+      "id": "media_richness_proxy",
+      "definition": "Suggest richer medium for complex/affective content.",
+      "indicators": ["long multi-clause + high ambiguity + high stakes"],
+      "maps_to": ["Clarity", "Empathy"]
+    }
+  ],
+  "severity_scale": {
+    "levels": ["info", "notice", "warn", "block"],
+    "policy_block": ["toxic_terms", "harassment_threats"]
+  },
+  "detection_evidence": ["span", "feature", "rule_id", "confidence"]
+}
