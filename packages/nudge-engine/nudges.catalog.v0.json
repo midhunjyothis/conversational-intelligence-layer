@@ -1,0 +1,27 @@
+{
+  "version": "0.1",
+  "nudges": [
+    {
+      "id": "clarify_request",
+      "title": "Clarify the ask",
+      "goal": "Actionability",
+      "trigger": "ambiguity|request_structure:missing",
+      "micro_copy": "State who/what/when.",
+      "example_before_after": {
+        "before": "Can you handle it?",
+        "after": "@Alex, can you send the draft by Fri 5pm CT?"
+      }
+    },
+    {
+      "id": "neutralize_blame",
+      "title": "Remove blame",
+      "goal": "Respect",
+      "trigger": "accusation_blame",
+      "micro_copy": "Describe the need, not the person.",
+      "example_before_after": {
+        "before": "You never sent it.",
+        "after": "I’m missing the report—can you share it?"
+      }
+    }
+  ]
+}
