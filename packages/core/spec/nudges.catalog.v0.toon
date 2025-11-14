@@ -10,14 +10,14 @@ nudge soften_blame:
   trigger: accusation_blame
   micro_copy: "Remove blame—focus on the task, not the person."
   before: "You never sent the report."
-  after: "I’m missing the report—can you share it?"
+  after: "I’m missing the report-can you share it?"
 
 nudge add_empathy:
   goal: Empathy
   trigger: missing_acknowledgment
   micro_copy: "Add a brief acknowledgment before your request."
   before: "Send me the draft."
-  after: "Thanks for working on this — could you send me the draft?"
+  after: "Thanks for working on this, could you send me the draft?"
 
 nudge remove_vagueness:
   goal: Clarity
@@ -31,21 +31,21 @@ nudge confirm_understanding:
   trigger: ambiguous_statement
   micro_copy: "Add a short confirmation to ensure both sides mean the same thing."
   before: "Okay, I'll handle it."
-  after: "Okay, I'll handle the client deck revisions — is that what you meant?"
+  after: "Okay, I'll handle the client deck revisions, is that what you meant?"
 
 nudge add_rationale:
   goal: Actionability
   trigger: request_without_reason
   micro_copy: "Add a brief reason so the request becomes easier to act on."
   before: "Please update the file."
-  after: "Please update the file — we need the latest numbers for tomorrow’s meeting."
+  after: "Please update the file, we need the latest numbers for tomorrow’s meeting."
 
 nudge reduce_intensity:
   goal: Respect
   trigger: harsh_tone
   micro_copy: "Soften the intensity to keep the message constructive."
   before: "This is completely wrong."
-  after: "This seems off — can we review it together?"
+  after: "This seems off, can we review it together?"
 
 nudge tighten_scope:
   goal: Specificity
@@ -53,3 +53,10 @@ nudge tighten_scope:
   micro_copy: "Narrow the scope so the message becomes clearer."
   before: "We should improve this."
   after: "Let’s improve the onboarding flow’s first two screens."
+
+nudge specify_owner:
+  goal: Actionability
+  trigger: missing_owner
+  micro_copy: "Name who is responsible so the task becomes executable."
+  before: "This needs to be fixed."
+  after: "@Alex, can you fix this before tomorrow’s sync?"
