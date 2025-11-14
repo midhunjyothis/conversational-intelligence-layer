@@ -1,0 +1,13 @@
+nudge clarify_request:
+  goal: Actionability
+  trigger: ambiguity
+  micro_copy: "State who, what, and when."
+  before: "Can you handle it?"
+  after: "@Alex, can you send the draft by Fri 5pm?"
+
+nudge soften_blame:
+  goal: Respect
+  trigger: accusation_blame
+  micro_copy: "Remove blame—focus on the task, not the person."
+  before: "You never sent the report."
+  after: "I’m missing the report—can you share it?"
