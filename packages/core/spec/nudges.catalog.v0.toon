@@ -1,3 +1,11 @@
+# Nudge coverage roadmap:
+# - Clarity      : target 6–8 nudges
+# - Respect      : target 6–8 nudges
+# - Empathy      : target 4–6 nudges
+# - Actionability: target 6–8 nudges
+# - Specificity  : target 4–6 nudges
+
+
 nudge clarify_request:
   goal: Actionability
   trigger: ambiguity
@@ -109,3 +117,10 @@ nudge remove_padding:
   micro_copy: "Cut filler phrases so the point is sharper."
   before: "Basically, I just wanted to kind of check in about the update."
   after: "I wanted to check in about the update."
+
+nudge add_context:
+  goal: Clarity
+  trigger: missing_background
+  micro_copy: "Add one line of context so the reader understands the situation."
+  before: "We need to change this."
+  after: "Based on the client feedback, we need to change this."
