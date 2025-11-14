@@ -1,9 +1,10 @@
-# Nudge coverage roadmap:
-# - Clarity      : target 6–8 nudges
-# - Respect      : target 6–8 nudges
-# - Empathy      : target 4–6 nudges
-# - Actionability: target 6–8 nudges
-# - Specificity  : target 4–6 nudges
+# Current counts:
+# - Clarity      : 7
+# - Respect      : 5
+# - Empathy      : 1
+# - Actionability: 6
+# - Specificity  : 3
+
 
 
 nudge clarify_request:
@@ -159,3 +160,11 @@ nudge clarify_status:
   micro_copy: "Turn a vague status into a clear, trackable update."
   before: "I’m working on it."
   after: "I’m 60% done — finishing the last section today."
+
+nudge acknowledge_effort:
+  goal: Empathy
+  trigger: missing_positive_ack
+  micro_copy: "Briefly acknowledge the other person’s effort or time."
+  before: "Can you update the numbers?"
+  after: "Thanks for your work on this — could you update the numbers?"
+
