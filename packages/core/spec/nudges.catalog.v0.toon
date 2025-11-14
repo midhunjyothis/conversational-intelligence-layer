@@ -74,3 +74,10 @@ nudge set_boundary:
   micro_copy: "Set a clear boundary to avoid over-commitment or confusion."
   before: "I’ll try to get to it."
   after: "I can take this on, but I’ll deliver it tomorrow morning."
+
+nudge split_overlong:
+  goal: Clarity
+  trigger: long_sentence
+  micro_copy: "Break long sentences into two shorter points."
+  before: "We need to finalize the proposal and update the metrics and prepare the slide deck."
+  after: "Let’s finalize the proposal first. Then update the metrics and prep the slide deck."
