@@ -1,0 +1,34 @@
+version: 0.1
+locale: en-US
+
+signal ambiguity:
+  definition: Unclear references or missing who/when/what
+  maps_to: [Clarity, Actionability]
+  indicators: ["pronoun_no_antecedent","vague_terms","missing_details"]
+
+signal specificity:
+  definition: Concrete owners, dates, numbers
+  maps_to: [Clarity, Actionability]
+  indicators: ["digits","iso_date","named_owner"]
+
+signal tone:
+  definition: Affective stance by lexis/punctuation/emoji
+  labels: [neutral,warm,enthusiastic,frustrated,sarcastic,aggressive]
+  maps_to: [Respect, Empathy]
+
+signal empathy:
+  definition: Acknowledgment of effort/state before ask
+  maps_to: [Empathy, Respect]
+  indicators: ["thanks","sorry","i_understand"]
+
+signal accusation_blame:
+  definition: Direct or implied fault assignment
+  maps_to: [Respect]
+  risk: conflict-escalation
+
+signal cultural_risk:
+  definition: Idioms/colloquialisms that may misfire cross-culturally
+  maps_to: [Clarity, Respect]
+
+severity_levels: [info, notice, warn, block]
+policy_block: [toxic_terms, harassment_threats]

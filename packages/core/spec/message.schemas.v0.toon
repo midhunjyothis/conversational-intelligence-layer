@@ -1,0 +1,10 @@
+schema MessageIn:
+  field text: string        # raw user message
+  field context.participants: [string]
+  field context.relationship: enum(peer, manager, customer, friend, family, other)
+  field context.channel: enum(email, chat, slack, whatsapp, messenger, telegram, imessage)
+  field context.locale: string
+  field thread_state: enum(draft, in_progress, sent)
+  field flags: [string]     # optional tags from caller
+
+  required: [text, context.participants, context.relationship, context.channel]

@@ -1,0 +1,35 @@
+schema InsightsOut:
+  field mqs: number                     # 0–100 overall message quality score
+
+  field sub_scores.clarity: number
+  field sub_scores.respect: number
+  field sub_scores.empathy: number
+  field sub_scores.specificity: number
+  field sub_scores.actionability: number
+
+  field detections: [Detection]
+  field nudges: [Nudge]
+
+  field suggested_rewrite: string       # optional improved message
+  field rationale: [string]             # why insights were triggered
+
+  required: [mqs, sub_scores]
+
+schema Detection:
+  field type: string
+  field span: [number]          # [start, end]
+  field severity: enum(info, notice, warn, block)
+  field evidence: string
+  field confidence: number
+
+  required: [type, span, severity]
+
+schema Nudge:
+  field id: string
+  field title: string
+  field micro_copy: string
+  field fix_strategy: string
+  field example_before_after.before: string
+  field example_before_after.after: string
+
+  required: [id, micro_copy]
