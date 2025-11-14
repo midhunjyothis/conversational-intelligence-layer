@@ -95,3 +95,10 @@ nudge confirm_next_step:
   micro_copy: "Add the next step so the message becomes executable."
   before: "Okay, sounds good."
   after: "Okay, sounds good — so I’ll finalize the draft and send it by noon?"
+
+nudge polite_request:
+  goal: Respect
+  trigger: direct_imperative
+  micro_copy: "Turn a command into a polite request."
+  before: "Send me the file."
+  after: "Could you send me the file when you get a moment?"
