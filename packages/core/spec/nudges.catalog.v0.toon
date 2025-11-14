@@ -131,3 +131,11 @@ nudge quantify_statement:
   micro_copy: "Add numbers to make the statement measurable."
   before: "The results are much better now."
   after: "The results improved by 18% compared to last week."
+
+nudge deescalate_tension:
+  goal: Respect
+  trigger: escalating_emotion
+  micro_copy: "Add a calming phrase to reduce tension."
+  before: "This is getting ridiculous."
+  after: "Let’s slow down and sort this out together."
+
