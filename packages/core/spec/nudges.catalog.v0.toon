@@ -67,3 +67,10 @@ nudge add_deadline:
   micro_copy: "Add a clear deadline to make the request executable."
   before: "Can you send the draft?"
   after: "Can you send the draft by today 6pm?"
+
+nudge set_boundary:
+  goal: Respect
+  trigger: unclear_expectation
+  micro_copy: "Set a clear boundary to avoid over-commitment or confusion."
+  before: "I’ll try to get to it."
+  after: "I can take this on, but I’ll deliver it tomorrow morning."
