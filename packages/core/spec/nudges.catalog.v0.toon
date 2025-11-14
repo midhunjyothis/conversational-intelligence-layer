@@ -60,3 +60,10 @@ nudge specify_owner:
   micro_copy: "Name who is responsible so the task becomes executable."
   before: "This needs to be fixed."
   after: "@Alex, can you fix this before tomorrow’s sync?"
+
+nudge add_deadline:
+  goal: Actionability
+  trigger: missing_timeframe
+  micro_copy: "Add a clear deadline to make the request executable."
+  before: "Can you send the draft?"
+  after: "Can you send the draft by today 6pm?"
