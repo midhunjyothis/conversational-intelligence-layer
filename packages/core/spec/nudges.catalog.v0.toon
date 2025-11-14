@@ -124,3 +124,10 @@ nudge add_context:
   micro_copy: "Add one line of context so the reader understands the situation."
   before: "We need to change this."
   after: "Based on the client feedback, we need to change this."
+
+nudge quantify_statement:
+  goal: Specificity
+  trigger: vague_quantity
+  micro_copy: "Add numbers to make the statement measurable."
+  before: "The results are much better now."
+  after: "The results improved by 18% compared to last week."
