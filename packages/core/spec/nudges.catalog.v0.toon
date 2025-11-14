@@ -145,3 +145,10 @@ nudge reduce_hedging:
   micro_copy: "Remove extra hedges so your message sounds clear and confident."
   before: "I think maybe we could possibly try updating it?"
   after: "We should update it."
+
+nudge firm_up_commitment:
+  goal: Actionability
+  trigger: weak_commitment
+  micro_copy: "Turn a vague commitment into a specific and reliable one."
+  before: "I’ll try to get it done."
+  after: "I’ll complete it by tomorrow 2pm."
