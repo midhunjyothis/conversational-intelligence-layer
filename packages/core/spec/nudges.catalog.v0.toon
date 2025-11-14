@@ -102,3 +102,10 @@ nudge polite_request:
   micro_copy: "Turn a command into a polite request."
   before: "Send me the file."
   after: "Could you send me the file when you get a moment?"
+
+nudge remove_padding:
+  goal: Clarity
+  trigger: unnecessary_fillers
+  micro_copy: "Cut filler phrases so the point is sharper."
+  before: "Basically, I just wanted to kind of check in about the update."
+  after: "I wanted to check in about the update."
