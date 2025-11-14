@@ -26,3 +26,10 @@ nudge remove_vagueness:
   before: "Let’s do this soon."
   after: "Let’s finalize this by tomorrow 5pm."
 
+nudge confirm_understanding:
+  goal: Clarity
+  trigger: ambiguous_statement
+  micro_copy: "Add a short confirmation to ensure both sides mean the same thing."
+  before: "Okay, I'll handle it."
+  after: "Okay, I'll handle the client deck revisions — is that what you meant?"
+
