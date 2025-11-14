@@ -19,3 +19,10 @@ nudge add_empathy:
   before: "Send me the draft."
   after: "Thanks for working on this — could you send me the draft?"
 
+nudge remove_vagueness:
+  goal: Clarity
+  trigger: vague_time_or_action
+  micro_copy: "Replace vague terms with specific details."
+  before: "Let’s do this soon."
+  after: "Let’s finalize this by tomorrow 5pm."
+
