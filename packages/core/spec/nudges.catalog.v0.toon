@@ -81,3 +81,17 @@ nudge split_overlong:
   micro_copy: "Break long sentences into two shorter points."
   before: "We need to finalize the proposal and update the metrics and prepare the slide deck."
   after: "Let’s finalize the proposal first. Then update the metrics and prep the slide deck."
+
+nudge replace_idiom:
+  goal: Clarity
+  trigger: cultural_risk
+  micro_copy: "Swap idioms for neutral language that works globally."
+  before: "Let's crush this meeting."
+  after: "Let's make this meeting a success."
+
+nudge confirm_next_step:
+  goal: Actionability
+  trigger: unclear_next_step
+  micro_copy: "Add the next step so the message becomes executable."
+  before: "Okay, sounds good."
+  after: "Okay, sounds good — so I’ll finalize the draft and send it by noon?"
