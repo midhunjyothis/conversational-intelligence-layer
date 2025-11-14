@@ -33,3 +33,10 @@ nudge confirm_understanding:
   before: "Okay, I'll handle it."
   after: "Okay, I'll handle the client deck revisions — is that what you meant?"
 
+nudge add_rationale:
+  goal: Actionability
+  trigger: request_without_reason
+  micro_copy: "Add a brief reason so the request becomes easier to act on."
+  before: "Please update the file."
+  after: "Please update the file — we need the latest numbers for tomorrow’s meeting."
+
