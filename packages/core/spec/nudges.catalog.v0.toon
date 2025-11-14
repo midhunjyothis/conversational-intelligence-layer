@@ -152,3 +152,10 @@ nudge firm_up_commitment:
   micro_copy: "Turn a vague commitment into a specific and reliable one."
   before: "I’ll try to get it done."
   after: "I’ll complete it by tomorrow 2pm."
+
+nudge clarify_status:
+  goal: Specificity
+  trigger: vague_status_update
+  micro_copy: "Turn a vague status into a clear, trackable update."
+  before: "I’m working on it."
+  after: "I’m 60% done — finishing the last section today."
