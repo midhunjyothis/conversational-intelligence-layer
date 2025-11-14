@@ -40,3 +40,10 @@ nudge add_rationale:
   before: "Please update the file."
   after: "Please update the file — we need the latest numbers for tomorrow’s meeting."
 
+nudge reduce_intensity:
+  goal: Respect
+  trigger: harsh_tone
+  micro_copy: "Soften the intensity to keep the message constructive."
+  before: "This is completely wrong."
+  after: "This seems off — can we review it together?"
+
