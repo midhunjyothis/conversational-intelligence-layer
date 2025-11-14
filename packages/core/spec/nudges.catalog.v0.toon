@@ -47,3 +47,9 @@ nudge reduce_intensity:
   before: "This is completely wrong."
   after: "This seems off — can we review it together?"
 
+nudge tighten_scope:
+  goal: Specificity
+  trigger: broad_statement
+  micro_copy: "Narrow the scope so the message becomes clearer."
+  before: "We should improve this."
+  after: "Let’s improve the onboarding flow’s first two screens."
