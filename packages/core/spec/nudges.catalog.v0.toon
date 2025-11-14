@@ -139,3 +139,9 @@ nudge deescalate_tension:
   before: "This is getting ridiculous."
   after: "Let’s slow down and sort this out together."
 
+nudge reduce_hedging:
+  goal: Clarity
+  trigger: excessive_hedging
+  micro_copy: "Remove extra hedges so your message sounds clear and confident."
+  before: "I think maybe we could possibly try updating it?"
+  after: "We should update it."
