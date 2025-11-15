@@ -175,3 +175,9 @@ nudge validate_feeling:
   before: "That’s not a big deal, let’s move on."
   after: "I get why that was frustrating — let’s move forward with this plan."
 
+nudge show_willingness_to_help:
+  goal: Empathy
+  trigger: user_expresses_difficulty
+  micro_copy: "Signal support to reduce pressure and improve collaboration."
+  before: "You need to fix this."
+  after: "If it helps, I can walk through this with you — could you take another pass?"
