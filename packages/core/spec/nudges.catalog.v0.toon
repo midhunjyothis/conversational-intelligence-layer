@@ -168,3 +168,10 @@ nudge acknowledge_effort:
   before: "Can you update the numbers?"
   after: "Thanks for your work on this — could you update the numbers?"
 
+nudge validate_feeling:
+  goal: Empathy
+  trigger: expressed_frustration
+  micro_copy: "Briefly validate the other person's feeling before responding."
+  before: "That’s not a big deal, let’s move on."
+  after: "I get why that was frustrating — let’s move forward with this plan."
+
