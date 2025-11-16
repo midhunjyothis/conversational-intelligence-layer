@@ -1,6 +1,6 @@
 # Conversational Intelligence Layer — MVP
 
-### 🧠 What it is
+### What it is
 A real-time conversational intelligence SDK that detects tone, clarity, empathy, and responsibility while people chat, improving message quality before sending.
 
 ### ⚙️ Tech Stack
