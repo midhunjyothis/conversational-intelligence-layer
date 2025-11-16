@@ -13,3 +13,7 @@
 - nudge-engine: maps triggers → nudges + rewrites
 - scorer: turns signals into MQS + sub-scores
 - sdk: public API (evaluateMessage) used by apps/adapters
+
+## November 16 2025
+
+- Set up repo, Toon specs, nudges catalog, and engine package skeletons.
