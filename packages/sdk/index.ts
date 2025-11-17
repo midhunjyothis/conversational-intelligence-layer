@@ -1,11 +1,23 @@
-// SDK Entrypoint (MVP placeholder)
+import type { MessageIn, InsightsOut } from "../core/types";
+import { runDetectors } from "../detectors";
+import { scoreMessage } from "../scorer";
+import { selectNudges } from "../nudge-engine";
 
-export async function evaluateMessage(message: any): Promise<any> {
-  // placeholder pipeline
-  const triggers = [];      // runDetectors(message.text)
-  const scores = { mqs: 0, sub_scores: {} }; // scoreMessage(triggers)
-  const nudges = [];        // selectNudges(triggers)
+export async function evaluateMessage(message: MessageIn): Promise<InsightsOut> {
+  const detections = runDetectors(message.text);
+  const scored = scoreMessage(message.text, detections);
+  const nudges = selectNudges(detections);
 
-  return { ...scores, detections: triggers, nudges };
+  let suggested_rewrite = message.text;
+  if (nudges.length > 0 && nudges[0].example_before_after) {
+    suggested_rewrite = nudges[0].example_before_after.after;
+  }
+
+  return {
+    ...scored,
+    detections,
+    nudges,
+    suggested_rewrite,
+    rationale: []
+  };
 }
-
