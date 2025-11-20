@@ -18,12 +18,31 @@ export const AppRedesign: React.FC = () => {
 
     const onEvaluate = async () => {
         if (!text.trim()) return;
+
+        // Skip analysis for very short messages or casual greetings
+        const wordCount = text.trim().split(/\s+/).length;
+        if (wordCount <= 3) {
+            const casualPatterns = /^(hi|hey|hello|thanks|thank you|ok|okay|sure|yes|no|good|great|awesome|fine|noted|got it|will do|done)\b/i;
+            if (casualPatterns.test(text.trim())) {
+                setShowSuggestion(false);
+                setInsights(null);
+                return;
+            }
+        }
+
         const message: MessageIn = { text, context: defaultContext };
         setLoading(true);
         try {
             const result = await evaluateMessage(message);
-            setInsights(result);
-            setShowSuggestion(true);
+
+            // Only show suggestions if MQS is below 85 or there are actual issues
+            if (result.mqs < 85 || result.detections.length > 0) {
+                setInsights(result);
+                setShowSuggestion(true);
+            } else {
+                setInsights(result);
+                setShowSuggestion(false);
+            }
         } finally {
             setLoading(false);
         }
@@ -38,7 +57,7 @@ export const AppRedesign: React.FC = () => {
 
         const timer = setTimeout(() => {
             onEvaluate();
-        }, 2000);
+        }, 2500); // Increased to 2.5 seconds to reduce constant triggering
 
         return () => clearTimeout(timer);
     }, [text]);
@@ -58,7 +77,7 @@ export const AppRedesign: React.FC = () => {
                 <div className="hero">
                     <h1>Conversational Intelligence Layer</h1>
                     <p className="hero-subtitle">
-                        Real-time communication coach that detects tone, clarity, and empathy before you hit send
+                        Professional communication coach that detects tone, clarity, and empathy in workplace messages
                     </p>
                     <p className="hero-tagline">
                         Building a semantic-logic intelligence layer that converts conversations into structured meaning
@@ -85,15 +104,17 @@ export const AppRedesign: React.FC = () => {
                                 </div>
 
                                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '16px' }}>
-                                    <div className="suggestion-chip">
-                                        <span>💬</span> Change tone to polite
-                                    </div>
-                                    <div className="suggestion-chip">
-                                        <span>✍️</span> Grammar correction
-                                    </div>
-                                    <div className="suggestion-chip">
-                                        <span>🎯</span> Make simpler
-                                    </div>
+                                    {insights.detections.map((detection, idx) => (
+                                        <div key={idx} className="suggestion-chip">
+                                            <span>
+                                                {detection.type.includes('tone') && '💬'}
+                                                {detection.type.includes('clarity') && '🔍'}
+                                                {detection.type.includes('empathy') && '❤️'}
+                                                {detection.type.includes('grammar') && '✍️'}
+                                            </span>
+                                            {detection.type.replace(/_/g, ' ')}
+                                        </div>
+                                    ))}
                                 </div>
 
                                 <div style={{
@@ -134,7 +155,7 @@ export const AppRedesign: React.FC = () => {
                             className="message-input"
                             value={text}
                             onChange={e => setText(e.target.value)}
-                            placeholder="Type your message..."
+                            placeholder="Type your professional message here..."
                             rows={1}
                             onKeyDown={e => {
                                 if (e.key === 'Enter' && !e.shiftKey) {
@@ -159,51 +180,72 @@ export const AppRedesign: React.FC = () => {
                             <div style={{ fontSize: '14px', color: '#666', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '1px' }}>
                                 Message Quality Score
                             </div>
-                            <div style={{ fontSize: '64px', fontWeight: '700', color: '#667eea' }}>
+                            <div style={{
+                                fontSize: '64px',
+                                fontWeight: '700',
+                                color: insights.mqs >= 85 ? '#4caf50' : insights.mqs >= 70 ? '#667eea' : '#ff9800'
+                            }}>
                                 {insights.mqs}
                             </div>
-                            <div style={{ fontSize: '14px', color: '#999' }}>out of 100</div>
+                            <div style={{ fontSize: '14px', color: '#999' }}>
+                                {insights.mqs >= 85 ? 'Excellent communication' : insights.mqs >= 70 ? 'Good, minor improvements suggested' : 'Needs improvement'}
+                            </div>
                         </div>
 
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: '16px' }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: '16px', marginBottom: '24px' }}>
                             {Object.entries(insights.sub_scores).map(([key, value]) => (
                                 <div key={key} style={{ textAlign: 'center', padding: '16px', background: '#f8f9fa', borderRadius: '12px' }}>
                                     <div style={{ fontSize: '11px', textTransform: 'uppercase', color: '#999', marginBottom: '8px' }}>
                                         {key}
                                     </div>
-                                    <div style={{ fontSize: '28px', fontWeight: '600', color: '#667eea' }}>
+                                    <div style={{ fontSize: '28px', fontWeight: '600', color: value >= 80 ? '#4caf50' : value >= 65 ? '#667eea' : '#ff9800' }}>
                                         {value}
                                     </div>
                                 </div>
                             ))}
                         </div>
+
+                        {insights.detections.length > 0 && (
+                            <div style={{ marginTop: '24px' }}>
+                                <h3 style={{ fontSize: '16px', marginBottom: '12px', color: '#666' }}>Issues Detected</h3>
+                                {insights.detections.map((detection, idx) => (
+                                    <div key={idx} style={{
+                                        padding: '12px',
+                                        marginBottom: '8px',
+                                        background: '#fff3cd',
+                                        borderRadius: '8px',
+                                        fontSize: '14px',
+                                        color: '#856404'
+                                    }}>
+                                        <strong>{detection.type.replace(/_/g, ' ')}</strong>: "{detection.evidence}"
+                                    </div>
+                                ))}
+                            </div>
+                        )}
                     </div>
                 )}
 
                 {/* Vision & Roadmap */}
                 <div style={{ marginTop: '48px', padding: '40px 32px', background: 'rgba(255,255,255,0.15)', borderRadius: '20px', color: 'white', backdropFilter: 'blur(10px)' }}>
-                    <h2 style={{ fontSize: '32px', marginBottom: '16px', textAlign: 'center', fontWeight: '700' }}>Building the Future of Communication</h2>
-                    <p style={{ fontSize: '16px', lineHeight: '1.8', marginBottom: '32px', textAlign: 'center', opacity: 0.9, maxWidth: '700px', margin: '0 auto 32px' }}>
-                        More than a writing assistant a <strong>semantic intelligence layer</strong> that transforms conversations into structured meaning, shared context, and actionable clarity.
+                    <h2 style={{ fontSize: '28px', marginBottom: '16px', textAlign: 'center', fontWeight: '700' }}>Building the Future of Professional Communication</h2>
+                    <p style={{ fontSize: '15px', lineHeight: '1.8', textAlign: 'center', opacity: 0.9, maxWidth: '650px', margin: '0 auto 32px' }}>
+                        A <strong>semantic intelligence layer</strong> that transforms workplace conversations into structured meaning, shared context, and actionable clarity.
                     </p>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px' }}>
-                        <div style={{ background: 'rgba(255,255,255,0.1)', padding: '24px', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.2)' }}>
-                            <div style={{ fontSize: '32px', marginBottom: '12px' }}></div>
-                            <h3 style={{ fontSize: '18px', marginBottom: '12px', fontWeight: '600' }}>Current: Real-time Detection</h3>
-                            <p style={{ fontSize: '14px', opacity: 0.9, lineHeight: '1.6' }}>Sub-150ms latency for tone, clarity, and empathy analysis as you type</p>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px' }}>
+                        <div style={{ background: 'rgba(255,255,255,0.1)', padding: '20px', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.2)' }}>
+                            <h3 style={{ fontSize: '16px', marginBottom: '10px', fontWeight: '600' }}>Current: Real-time Detection</h3>
+                            <p style={{ fontSize: '13px', opacity: 0.9, lineHeight: '1.6' }}>Sub-150ms latency for tone, clarity, and empathy analysis</p>
                         </div>
 
-                        <div style={{ background: 'rgba(255,255,255,0.1)', padding: '24px', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.2)' }}>
-                            <div style={{ fontSize: '32px', marginBottom: '12px' }}></div>
-                            <h3 style={{ fontSize: '18px', marginBottom: '12px', fontWeight: '600' }}>Next: Context Intelligence</h3>
-                            <p style={{ fontSize: '14px', opacity: 0.9, lineHeight: '1.6' }}>Team-aware assistant that understands intent and mediates alignment</p>
+                        <div style={{ background: 'rgba(255,255,255,0.1)', padding: '20px', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.2)' }}>
+                            <h3 style={{ fontSize: '16px', marginBottom: '10px', fontWeight: '600' }}>Next: Context Intelligence</h3>
+                            <p style={{ fontSize: '13px', opacity: 0.9, lineHeight: '1.6' }}>Team-aware assistant that understands intent and alignment</p>
                         </div>
 
-                        <div style={{ background: 'rgba(255,255,255,0.1)', padding: '24px', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.2)' }}>
-                            <div style={{ fontSize: '32px', marginBottom: '12px' }}></div>
-                            <h3 style={{ fontSize: '18px', marginBottom: '12px', fontWeight: '600' }}>Vision: Organizational OS</h3>
-                            <p style={{ fontSize: '14px', opacity: 0.9, lineHeight: '1.6' }}>Convert dialog into narrative, plans, actions, and intelligent dashboards</p>
+                        <div style={{ background: 'rgba(255,255,255,0.1)', padding: '20px', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.2)' }}>
+                            <h3 style={{ fontSize: '16px', marginBottom: '10px', fontWeight: '600' }}>Vision: Organizational OS</h3>
+                            <p style={{ fontSize: '13px', opacity: 0.9, lineHeight: '1.6' }}>Convert dialog into narrative, plans, and intelligent dashboards</p>
                         </div>
                     </div>
                 </div>
