@@ -11,7 +11,7 @@ A real-time conversational intelligence SDK that detects tone, clarity, empathy,
 
 ### 📂 Structure
 packages/ → core logic, detectors, scorer, nudges  
-apps/demo-react → live typing demo  
+apps/conversational-intelligence-layer-demo → live typing demo  
 docs/ → specs, adapters, and privacy guides  
 
 ### 🚀 Goal
