@@ -22,7 +22,7 @@ export const AppRedesign: React.FC = () => {
         // Skip analysis for very short messages or casual greetings
         const wordCount = text.trim().split(/\s+/).length;
         if (wordCount <= 3) {
-            const casualPatterns = /^(hi|hey|hello|thanks|thank you|ok|okay|sure|yes|no|good|great|awesome|fine|noted|got it|will do|done)\b/i;
+            const casualPatterns = /^(hi|hey|hello|thanks|thank you|ok|okay|sure|yes|no|good|great|awesome|fine|noted|got it|will do|done|how are you|how are you doing|what's up|whats up)\b/i;
             if (casualPatterns.test(text.trim())) {
                 setShowSuggestion(false);
                 setInsights(null);
