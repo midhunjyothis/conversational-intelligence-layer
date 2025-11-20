@@ -19,15 +19,19 @@ export const AppRedesign: React.FC = () => {
     const onEvaluate = async () => {
         if (!text.trim()) return;
 
-        // Skip analysis for very short messages or casual greetings
-        const wordCount = text.trim().split(/\s+/).length;
-        if (wordCount <= 3) {
-            const casualPatterns = /^(hi|hey|hello|thanks|thank you|ok|okay|sure|yes|no|good|great|awesome|fine|noted|got it|will do|done|how are you|how are you doing|what's up|whats up)\b/i;
-            if (casualPatterns.test(text.trim())) {
-                setShowSuggestion(false);
-                setInsights(null);
-                return;
-            }
+        // Skip analysis for casual greetings and very short friendly messages
+        const lowerText = text.trim().toLowerCase();
+        const casualPhrases = [
+            'hi', 'hey', 'hello', 'thanks', 'thank you', 'ok', 'okay', 'sure',
+            'yes', 'no', 'good', 'great', 'awesome', 'fine', 'noted',
+            'hi how are you', 'hello how are you', 'hey how are you',
+            'how are you', 'hows it going', 'whats up', 'got it', 'will do', 'done'
+        ];
+
+        if (casualPhrases.some(phrase => lowerText === phrase || lowerText.startsWith(phrase + ' ') || lowerText.startsWith(phrase + '?'))) {
+            setShowSuggestion(false);
+            setInsights(null);
+            return;
         }
 
         const message: MessageIn = { text, context: defaultContext };
@@ -57,7 +61,7 @@ export const AppRedesign: React.FC = () => {
 
         const timer = setTimeout(() => {
             onEvaluate();
-        }, 2500); // Increased to 2.5 seconds to reduce constant triggering
+        }, 2500);
 
         return () => clearTimeout(timer);
     }, [text]);
