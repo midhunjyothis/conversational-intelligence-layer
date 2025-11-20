@@ -180,6 +180,34 @@ export const AppRedesign: React.FC = () => {
                     </div>
                 )}
 
+                {/* Vision & Roadmap */}
+                <div style={{ marginTop: '48px', padding: '40px 32px', background: 'rgba(255,255,255,0.15)', borderRadius: '20px', color: 'white', backdropFilter: 'blur(10px)' }}>
+                    <h2 style={{ fontSize: '32px', marginBottom: '16px', textAlign: 'center', fontWeight: '700' }}>Building the Future of Communication</h2>
+                    <p style={{ fontSize: '16px', lineHeight: '1.8', marginBottom: '32px', textAlign: 'center', opacity: 0.9, maxWidth: '700px', margin: '0 auto 32px' }}>
+                        More than a writing assistant—a <strong>semantic intelligence layer</strong> that transforms conversations into structured meaning, shared context, and actionable clarity.
+                    </p>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px' }}>
+                        <div style={{ background: 'rgba(255,255,255,0.1)', padding: '24px', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.2)' }}>
+                            <div style={{ fontSize: '32px', marginBottom: '12px' }}></div>
+                            <h3 style={{ fontSize: '18px', marginBottom: '12px', fontWeight: '600' }}>Current: Real-time Detection</h3>
+                            <p style={{ fontSize: '14px', opacity: 0.9, lineHeight: '1.6' }}>Sub-150ms latency for tone, clarity, and empathy analysis as you type</p>
+                        </div>
+
+                        <div style={{ background: 'rgba(255,255,255,0.1)', padding: '24px', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.2)' }}>
+                            <div style={{ fontSize: '32px', marginBottom: '12px' }}></div>
+                            <h3 style={{ fontSize: '18px', marginBottom: '12px', fontWeight: '600' }}>Next: Context Intelligence</h3>
+                            <p style={{ fontSize: '14px', opacity: 0.9, lineHeight: '1.6' }}>Team-aware assistant that understands intent and mediates alignment</p>
+                        </div>
+
+                        <div style={{ background: 'rgba(255,255,255,0.1)', padding: '24px', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.2)' }}>
+                            <div style={{ fontSize: '32px', marginBottom: '12px' }}></div>
+                            <h3 style={{ fontSize: '18px', marginBottom: '12px', fontWeight: '600' }}>Vision: Organizational OS</h3>
+                            <p style={{ fontSize: '14px', opacity: 0.9, lineHeight: '1.6' }}>Convert dialog into narrative, plans, actions, and intelligent dashboards</p>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     );
