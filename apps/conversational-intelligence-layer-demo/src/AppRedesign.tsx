@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { evaluateMessage } from "../../../packages/sdk";
 import type { MessageIn, InsightsOut } from "../../../packages/core/types";
 import "./AppRedesign.css";
@@ -15,12 +15,13 @@ export const AppRedesign: React.FC = () => {
     const [insights, setInsights] = useState<InsightsOut | null>(null);
     const [loading, setLoading] = useState(false);
     const [showSuggestion, setShowSuggestion] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
-    const onEvaluate = async () => {
-        if (!text.trim()) return;
+    const abortControllerRef = useRef<AbortController | null>(null);
+    const evaluationCountRef = useRef(0);
 
-        // Skip analysis for casual greetings and very short friendly messages
-        const lowerText = text.trim().toLowerCase();
+    const isCasualGreeting = useCallback((message: string): boolean => {
+        const lowerText = message.trim().toLowerCase();
         const casualPhrases = [
             'hi', 'hey', 'hello', 'thanks', 'thank you', 'ok', 'okay', 'sure',
             'yes', 'no', 'good', 'great', 'awesome', 'fine', 'noted',
@@ -28,16 +29,42 @@ export const AppRedesign: React.FC = () => {
             'how are you', 'hows it going', 'whats up', 'got it', 'will do', 'done'
         ];
 
-        if (casualPhrases.some(phrase => lowerText === phrase || lowerText.startsWith(phrase + ' ') || lowerText.startsWith(phrase + '?'))) {
+        return casualPhrases.some(phrase =>
+            lowerText === phrase ||
+            lowerText.startsWith(phrase + ' ') ||
+            lowerText.startsWith(phrase + '?')
+        );
+    }, []);
+
+    const onEvaluate = useCallback(async (textToEvaluate: string) => {
+        if (!textToEvaluate.trim()) return;
+
+        // Skip casual greetings
+        if (isCasualGreeting(textToEvaluate)) {
             setShowSuggestion(false);
             setInsights(null);
+            setError(null);
             return;
         }
 
-        const message: MessageIn = { text, context: defaultContext };
+        // Cancel any pending evaluation
+        if (abortControllerRef.current) {
+            abortControllerRef.current.abort();
+        }
+
+        const currentEvaluation = ++evaluationCountRef.current;
+        const message: MessageIn = { text: textToEvaluate, context: defaultContext };
+
         setLoading(true);
+        setError(null);
+
         try {
             const result = await evaluateMessage(message);
+
+            // Ignore if this is not the latest evaluation
+            if (currentEvaluation !== evaluationCountRef.current) {
+                return;
+            }
 
             // Only show suggestions if MQS is below 85 or there are actual issues
             if (result.mqs < 85 || result.detections.length > 0) {
@@ -47,31 +74,63 @@ export const AppRedesign: React.FC = () => {
                 setInsights(result);
                 setShowSuggestion(false);
             }
+        } catch (err) {
+            // Ignore if this is not the latest evaluation
+            if (currentEvaluation !== evaluationCountRef.current) {
+                return;
+            }
+
+            console.error('Evaluation error:', err);
+            setError('Failed to analyze message. Please try again.');
+            setInsights(null);
+            setShowSuggestion(false);
         } finally {
-            setLoading(false);
+            if (currentEvaluation === evaluationCountRef.current) {
+                setLoading(false);
+            }
         }
-    };
+    }, [isCasualGreeting]);
 
     useEffect(() => {
+        // Clear suggestions when text is empty
         if (!text.trim()) {
             setShowSuggestion(false);
             setInsights(null);
+            setError(null);
             return;
         }
 
+        // Hide suggestions while typing
+        setShowSuggestion(false);
+
         const timer = setTimeout(() => {
-            onEvaluate();
+            onEvaluate(text);
         }, 2500);
 
         return () => clearTimeout(timer);
-    }, [text]);
+    }, [text, onEvaluate]);
+
+    // Cleanup on unmount
+    useEffect(() => {
+        return () => {
+            if (abortControllerRef.current) {
+                abortControllerRef.current.abort();
+            }
+        };
+    }, []);
 
     const applySuggestion = () => {
         if (insights?.suggested_rewrite) {
             setText(insights.suggested_rewrite);
             setShowSuggestion(false);
             setInsights(null);
+            setError(null);
         }
+    };
+
+    const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setText(e.target.value);
+        setError(null);
     };
 
     return (
@@ -89,9 +148,22 @@ export const AppRedesign: React.FC = () => {
                 </div>
 
                 <div className="chat-container">
-                    {text && !showSuggestion && (
+                    {text && !showSuggestion && !error && (
                         <div className="message-bubble">
                             {text}
+                        </div>
+                    )}
+
+                    {error && (
+                        <div style={{
+                            padding: '16px',
+                            background: '#fee',
+                            borderLeft: '4px solid #f44336',
+                            borderRadius: '8px',
+                            marginBottom: '16px',
+                            color: '#c62828'
+                        }}>
+                            {error}
                         </div>
                     )}
 
@@ -107,19 +179,22 @@ export const AppRedesign: React.FC = () => {
                                     <span style={{ fontWeight: '700', color: '#0a1929' }}>Suggested improvements</span>
                                 </div>
 
-                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '16px' }}>
-                                    {insights.detections.map((detection, idx) => (
-                                        <div key={idx} className="suggestion-chip">
-                                            <span>
-                                                {detection.type.includes('tone') && '💬'}
-                                                {detection.type.includes('clarity') && '🔍'}
-                                                {detection.type.includes('empathy') && '❤️'}
-                                                {detection.type.includes('grammar') && '✍️'}
-                                            </span>
-                                            {detection.type.replace(/_/g, ' ')}
-                                        </div>
-                                    ))}
-                                </div>
+                                {insights.detections.length > 0 && (
+                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '16px' }}>
+                                        {insights.detections.map((detection, idx) => (
+                                            <div key={idx} className="suggestion-chip">
+                                                <span>
+                                                    {detection.type.includes('tone') && '💬'}
+                                                    {detection.type.includes('clarity') && '🔍'}
+                                                    {detection.type.includes('empathy') && '❤️'}
+                                                    {detection.type.includes('grammar') && '✍️'}
+                                                    {!detection.type.includes('tone') && !detection.type.includes('clarity') && !detection.type.includes('empathy') && !detection.type.includes('grammar') && '⚠️'}
+                                                </span>
+                                                {detection.type.replace(/_/g, ' ')}
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
 
                                 <div style={{
                                     background: '#f0f9ff',
@@ -158,20 +233,23 @@ export const AppRedesign: React.FC = () => {
                         <textarea
                             className="message-input"
                             value={text}
-                            onChange={e => setText(e.target.value)}
+                            onChange={handleTextChange}
                             placeholder="Type your professional message here..."
                             rows={1}
                             onKeyDown={e => {
                                 if (e.key === 'Enter' && !e.shiftKey) {
                                     e.preventDefault();
-                                    if (text.trim()) onEvaluate();
+                                    if (text.trim() && !loading) {
+                                        onEvaluate(text);
+                                    }
                                 }
                             }}
                         />
                         <button
                             className="send-button"
-                            onClick={onEvaluate}
+                            onClick={() => onEvaluate(text)}
                             disabled={loading || !text.trim()}
+                            aria-label="Analyze message"
                         >
                             {loading ? "⏳" : "➤"}
                         </button>
